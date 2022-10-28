@@ -1,0 +1,3 @@
+librenms-handler >= 0.4.2
+pandas
+tabulate
