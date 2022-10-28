@@ -3,7 +3,8 @@ Create documentation by pulling information from a LibreNMS monitoring system in
 
 <h1>Status - testing USE AT OWN RISK</h1>
 
-Not 10/10 on pylint right now...
+- Not 10/10 on pylint right now...
+- <b>verify = False ... is SSL verify False... you can set to True if you want...</b>
 
 <h2>Introduction</h2>
 
