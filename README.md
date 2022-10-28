@@ -6,6 +6,11 @@ Create documentation by pulling information from a LibreNMS monitoring system in
 - Not 10/10 on pylint right now...
 - <b>verify = False ... is SSL verify False... you can set to True if you want...</b>
 
+<h2>Requirements</h2>
+
+- requires python3
+- requires pip3 install of modules in requirements.txt - recommend run as unpriv user
+
 <h2>Introduction</h2>
 
 Use this script to output a file using python module `tabulate` e.g. RST/CSV. 
