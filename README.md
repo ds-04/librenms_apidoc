@@ -1,6 +1,5 @@
 # librenms_apidoc
-Create documentation by pulling information from a LibreNMS monitoring system instance using librenms-handler/API.
-
+Create documentation by pulling information from a LibreNMS monitoring system instance, using librenms-handler and API interaction: https://github.com/WhaleJ84/librenms_handler
 
 <h1>Status - testing USE AT OWN RISK</h1>
 
