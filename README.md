@@ -1,7 +1,7 @@
 # librenms_apidoc
 Create documentation by pulling information from a LibreNMS monitoring system instance, using librenms-handler and API interaction: https://github.com/WhaleJ84/librenms_handler
 
-<h1>Status - testing USE AT OWN RISK</h1>
+<h1>Project Status: testing</h1>
 
 - Not 10/10 on pylint right now...
 - <b>verify = False ... is SSL verify False... you can set to True if you want...</b>
