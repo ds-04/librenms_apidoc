@@ -60,7 +60,7 @@ for group in grouplist:
     #DEBUG ONLY
     #print("WORKING THROUGH THIS GROUP....."+group)
     if GROUPSTATUS == "ok":
-        #use device count within group to dtermine iteration
+        #use device count within group to determine iteration
         count_now=int(deviceByGroup_dict['count'])
         #initialise
         ITERATOR2=0
@@ -79,7 +79,8 @@ for group in grouplist:
             #Get the serial
             this_serial=response_this_device_dict['devices'][0]['serial']
             #remove VMWare serials
-            this_serial=re.sub('(V|v)(M|m)(W|w)(A|a)(R|r)(E|e).*', 'VMWare', str(this_serial))
+            if librenms_apidoc_settings.VMWARE_SERIAL_REPLACE == 'TRUE':
+                this_serial=re.sub('(V|v)(M|m)(W|w)(A|a)(R|r)(E|e).*', 'VMWare', str(this_serial))
             #OS
             this_features=response_this_device_dict['devices'][0]['features']
             #Notes
@@ -88,7 +89,7 @@ for group in grouplist:
             this_list=[this_group, this_hostname, this_serial, this_location, this_features, this_notes]
             #append all necessary fields
             df = df.append(pd.DataFrame([this_list], columns=["Group","Hostname","Serial","Location","OS","Notes"]), ignore_index=True)
-            #incremet for loop
+            #increment for loop
             ITERATOR2 += 1
     #group has any error e.g. empty
     else:
@@ -98,8 +99,7 @@ for group in grouplist:
         grouplist.remove(group)
         error_grouplist.append(group)
 
-#DBUG, print df or as string
-#print(df)
+#DBUG, print df as string
 #print(df.to_string())
 
 #find cwd
@@ -109,5 +109,5 @@ WORKDIR=os.getcwd()
 #Write output
 table_var0=tabulate(df, headers='keys', tablefmt=librenms_apidoc_settings.TABLE_FORMAT)
 
-with open(WORKDIR+"/content1.inc", "w", encoding="utf-8") as file1:
+with open(WORKDIR+"/"+librenms_apidoc_settings.OUTPUT_FILE_NAME, "w", encoding="utf-8") as file1:
     file1.write(table_var0)
