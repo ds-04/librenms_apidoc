@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+
+#Author David Simpson, 2022
+
+#Generate output from a LibreNMS instance, using the API and librenms-handler (python module), for documentation purposes
+
 import logging
 import os
 import re
