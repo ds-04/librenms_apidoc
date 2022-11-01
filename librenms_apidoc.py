@@ -42,7 +42,8 @@ responseGroups=devicesG.get_devicegroups()
 dict_responseGroups=responseGroups.json()
 
 #Results dataframe
-df = pd.DataFrame()
+df_columns_list=["Group","Hostname","Serial","Location","OS","OS detail","Notes"]
+df = pd.DataFrame(columns=df_columns_list)
 
 #Build the list of groups...
 ITERATOR1=0
@@ -60,6 +61,7 @@ while ITERATOR1 < int(dict_responseGroups['count']):
 for group in grouplist:
     deviceByGroup=devicesG.get_devices_by_group(group)
     deviceByGroup_dict=deviceByGroup.json()
+    #DEBUG
     #print(deviceByGroup_dict)
     GROUPSTATUS=str(deviceByGroup_dict['status'])
     #DEBUG ONLY
@@ -78,6 +80,8 @@ for group in grouplist:
             #sort out response, make dict
             response_this_device=devices.get_device(this_deviceID)
             response_this_device_dict=response_this_device.json()
+            #DEBUG
+            #print(response_this_device_dict)
             #single device, index 0, create local vars for fields, host and location first
             this_hostname=response_this_device_dict['devices'][0]['hostname']
             this_location=response_this_device_dict['devices'][0]['location']
@@ -87,13 +91,16 @@ for group in grouplist:
             if librenms_apidoc_settings.VMWARE_SERIAL_REPLACE == 'TRUE':
                 this_serial=re.sub('(V|v)(M|m)(W|w)(A|a)(R|r)(E|e).*', 'VMWare', str(this_serial))
             #OS
+            this_os=response_this_device_dict['devices'][0]['os']
+            #OS - features
             this_features=response_this_device_dict['devices'][0]['features']
             #Notes
             this_notes=response_this_device_dict['devices'][0]['notes']
             #create list of desired fields
-            this_list=[this_group, this_hostname, this_serial, this_location, this_features, this_notes]
-            #append all necessary fields
-            df = df.append(pd.DataFrame([this_list], columns=["Group","Hostname","Serial","Location","OS","Notes"]), ignore_index=True)
+            this_list=[this_group, this_hostname, this_serial, this_location, this_os, this_features, this_notes]
+            #append all necessary fields using pd.concat (and not deprecated pd.append)
+            row_to_append = pd.DataFrame([this_list],columns=df_columns_list)
+            df = pd.concat([df,row_to_append])
             #increment for loop
             ITERATOR2 += 1
     #group has any error e.g. empty
@@ -110,6 +117,8 @@ for group in grouplist:
 #find cwd
 WORKDIR=os.getcwd()
 
+#re-index after use of concat
+df.reset_index(inplace=True, drop=True) 
 
 #Write output
 table_var0=tabulate(df, headers='keys', tablefmt=librenms_apidoc_settings.TABLE_FORMAT)
